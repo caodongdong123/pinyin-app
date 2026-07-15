@@ -35,11 +35,13 @@ class SpellingData {
 
         String initial = '';
         String rest = pinyinBase;
+        String restFull = pinyinFull;
 
         for (String ini in _initials) {
           if (pinyinBase.startsWith(ini)) {
             initial = ini;
             rest = pinyinBase.substring(ini.length);
+            restFull = pinyinFull.substring(ini.length);
             break;
           }
         }
@@ -48,18 +50,26 @@ class SpellingData {
         if (initial.isEmpty) continue;
 
         String final1 = rest;
+        String final1Full = restFull;
         String final2 = '';
+        String final2Full = '';
 
         if (rest.length > 1) {
           if (rest.startsWith('i') && ['a', 'ao', 'an', 'ang', 'ong'].contains(rest.substring(1))) {
             final2 = 'i';
+            final2Full = restFull.substring(0, 1);
             final1 = rest.substring(1);
+            final1Full = restFull.substring(1);
           } else if (rest.startsWith('u') && ['a', 'o', 'ai', 'an', 'ang'].contains(rest.substring(1))) {
             final2 = 'u';
+            final2Full = restFull.substring(0, 1);
             final1 = rest.substring(1);
+            final1Full = restFull.substring(1);
           } else if ((rest.startsWith('v') || rest.startsWith('u')) && ['e', 'an'].contains(rest.substring(1))) {
-            final2 = 'u'; // display v/u as u/ü (using u for simplicity in pinyin keyboard)
+            final2Full = restFull.substring(0, 1); 
+            final2 = 'u';
             final1 = rest.substring(1);
+            final1Full = restFull.substring(1);
           }
         }
 
@@ -70,11 +80,11 @@ class SpellingData {
           'result': pinyinBase,
         };
 
-        if (final2.isNotEmpty) {
-          levelData['final'] = final2; // medial
-          levelData['final2'] = final1; // tail
+        if (final2Full.isNotEmpty) {
+          levelData['final'] = final2Full; // medial
+          levelData['final2'] = final1Full; // tail
         } else {
-          levelData['final'] = final1;
+          levelData['final'] = final1Full;
         }
 
         levels.add(levelData);
