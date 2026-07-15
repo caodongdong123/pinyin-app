@@ -133,7 +133,7 @@ class _MatchingGamePageState extends State<MatchingGamePage> {
                                   _score++;
                                 });
                                 // Play celebration audio
-                                playAudio('assets/audio/placeholder.mp3');
+                                playAudio('太棒了，答对了！');
                               },
                             );
                     }).toList(),

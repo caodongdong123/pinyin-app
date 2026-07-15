@@ -47,7 +47,7 @@ class _ListenGamePageState extends State<ListenGamePage> {
       _isPlaying = true;
     });
     // Play the placeholder audio
-    playAudio('assets/audio/placeholder.mp3');
+    playAudio(_targetPinyin);
     
     // Simulate audio playing duration for animation
     Future.delayed(const Duration(milliseconds: 800), () {

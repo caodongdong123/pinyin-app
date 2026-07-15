@@ -44,7 +44,7 @@ class _SpellingPracticePageState extends State<SpellingPracticePage> with Single
     });
     _controller.forward();
     // Play combined audio
-    playAudio('assets/audio/placeholder.mp3');
+    playAudio(_levels[_currentIndex]['word'] ?? '');
   }
 
   void _resetOrNext() {
