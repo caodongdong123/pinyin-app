@@ -6,9 +6,9 @@ bool _isInitialized = false;
 Future<void> _initTts() async {
   if (_isInitialized) return;
   await _flutterTts.setLanguage("zh-CN");
-  await _flutterTts.setSpeechRate(0.45); // slightly slower for clear teaching
+  await _flutterTts.setSpeechRate(0.5); // standard natural rate
   await _flutterTts.setVolume(1.0);
-  await _flutterTts.setPitch(1.3); // pitch up for a clearer female voice
+  await _flutterTts.setPitch(1.0); // natural voice, avoids robotic distortion
   _isInitialized = true;
 }
 

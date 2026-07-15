@@ -43,7 +43,7 @@ class _PinyinLearningPageState extends State<PinyinLearningPage> {
 
   void _playAudio() {
     // Play actual audio via web API
-    playAudio(widget.dataList[currentIndex]['word'] ?? '');
+    playAudio(widget.dataList[currentIndex]['pinyin'] ?? '');
   }
 
   void _toggleAutoPlay() async {
