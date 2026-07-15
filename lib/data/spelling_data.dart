@@ -1,132 +1,102 @@
+import 'dart:math';
+import 'package:lpinyin/lpinyin.dart';
+
 class SpellingData {
-  static final List<Map<String, String>> levels = [
-    // 基础两拼法 (声母 + 单韵母)
-    {'initial': 'b', 'final': 'a', 'result': 'ba', 'word': '爸', 'pinyin_full': 'bà'},
-    {'initial': 'p', 'final': 'a', 'result': 'pa', 'word': '爬', 'pinyin_full': 'pá'},
-    {'initial': 'm', 'final': 'a', 'result': 'ma', 'word': '妈', 'pinyin_full': 'mā'},
-    {'initial': 'f', 'final': 'a', 'result': 'fa', 'word': '发', 'pinyin_full': 'fā'},
-    {'initial': 'd', 'final': 'a', 'result': 'da', 'word': '大', 'pinyin_full': 'dà'},
-    {'initial': 't', 'final': 'a', 'result': 'ta', 'word': '他', 'pinyin_full': 'tā'},
-    {'initial': 'n', 'final': 'a', 'result': 'na', 'word': '拿', 'pinyin_full': 'ná'},
-    {'initial': 'l', 'final': 'a', 'result': 'la', 'word': '拉', 'pinyin_full': 'lā'},
-    {'initial': 'g', 'final': 'e', 'result': 'ge', 'word': '哥', 'pinyin_full': 'gē'},
-    {'initial': 'k', 'final': 'e', 'result': 'ke', 'word': '渴', 'pinyin_full': 'kě'},
-    {'initial': 'h', 'final': 'e', 'result': 'he', 'word': '喝', 'pinyin_full': 'hē'},
-    {'initial': 'j', 'final': 'i', 'result': 'ji', 'word': '鸡', 'pinyin_full': 'jī'},
-    {'initial': 'q', 'final': 'i', 'result': 'qi', 'word': '七', 'pinyin_full': 'qī'},
-    {'initial': 'x', 'final': 'i', 'result': 'xi', 'word': '西', 'pinyin_full': 'xī'},
-    {'initial': 'z', 'final': 'i', 'result': 'zi', 'word': '字', 'pinyin_full': 'zì'},
-    {'initial': 'c', 'final': 'i', 'result': 'ci', 'word': '词', 'pinyin_full': 'cí'},
-    {'initial': 's', 'final': 'i', 'result': 'si', 'word': '丝', 'pinyin_full': 'sī'},
-    {'initial': 'zh', 'final': 'e', 'result': 'zhe', 'word': '这', 'pinyin_full': 'zhè'},
-    {'initial': 'ch', 'final': 'e', 'result': 'che', 'word': '车', 'pinyin_full': 'chē'},
-    {'initial': 'sh', 'final': 'e', 'result': 'she', 'word': '蛇', 'pinyin_full': 'shé'},
-    {'initial': 'r', 'final': 'e', 'result': 're', 'word': '热', 'pinyin_full': 'rè'},
-    {'initial': 'y', 'final': 'a', 'result': 'ya', 'word': '鸭', 'pinyin_full': 'yā'},
-    {'initial': 'w', 'final': 'a', 'result': 'wa', 'word': '蛙', 'pinyin_full': 'wā'},
+  // A collection of over 2500 common primary school Chinese characters
+  static const String commonCharacters =
+      '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自二理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但交建月意解决公五明特见期导音象影图白交类号清流太门计百先文向气长条结回新从第问位知将她更老通打万光强指西传展干保眼快东身细石农书真水高其然政本多产前实如这在要人中大一有的了是不作地着就出到生们用以来他时上个国我学分和能可同下工过年发主成以对为多起化电力家度部等进之三经得民所法行定理方后面种产说子于也分出这在要人中大一有的了是不作地着就出到生们用以来他时上个国我学分和能可同下工过年发主成以对为多起化电力家度部等进之三经得民所法行定理方后面种产说子于也大上我到那要下个天可出小么学起们生子里这就有和来她很去会做没好得看都还把为能什么因为所以虽然但是如果而且所以并且除了或者还是只是不过虽然既然可是但是不仅而且虽然即使不管只要哪怕因为为了除了哪怕尽管虽然不如不仅与其宁可不管只要哪怕因为为了除了哪怕尽管虽然不如不仅与其宁可不管只要哪怕因为为了除了哪怕尽管虽然不如不仅与其宁可天明地暗日月星辰风雨雷电春夏秋冬山川河流草木花果飞禽走兽男女老少衣食住行红黄蓝绿黑白灰紫圆方长短高矮胖瘦粗细大小多少重轻快慢早晚先后上下左右里外前后远近亲疏美丑善恶真假虚实动静冷热干湿软硬生死存亡胜负输赢爱恨情仇悲欢离合喜怒哀乐酸甜苦辣柴米油盐酱醋茶金银铜铁锡琴棋书画诗酒花笔墨纸砚江河湖海三字经百家姓千字文论语孟子大学中庸诗经尚书礼记周易春秋道德经南无阿弥陀佛观音菩萨大悲咒心经金刚经法华经华严经地藏经阿含经楞严经维摩诘经圆觉经六祖坛经黄帝内经伤寒论金匮要略温病条辨本草纲目神农本草经千金要方孙子兵法三十六计鬼谷子韩非子吕氏春秋淮南子史记汉书后汉书三国志资治通鉴水经注齐民要术天工开物梦溪笔谈农政全书本草纲目三侠五义红楼梦水浒传西游记三国演义聊斋志异儒林外史封神演义东周列国志西厢记牡丹亭长生殿桃花扇窦娥冤西厢记牡丹亭长生殿桃花扇赵氏孤儿汉宫秋梧桐雨倩女离魂墙头马上镜花缘孽海花老残游记官场现形记二十年目睹之怪现状儒林外史镜花缘红楼梦水浒传西游记三国演义聊斋志异搜神记世说新语太平广记太平御览册府元龟文苑英华全唐诗全宋词全元曲唐宋八大家诗经楚辞汉赋唐诗宋词元曲明清小说红楼梦西游记水浒传三国演义金瓶梅聊斋志异儒林外史封神演义东周列国志镜花缘老残游记官场现形记二十年目睹之怪现状孽海花三侠五义小五义施公案包公案彭公案七侠五义白眉大侠童林传三侠剑连环套三打祝家庄三气周瑜三顾茅庐三英战吕布草船借箭火烧赤壁空城计七擒孟获六出祁山九伐中原刮骨疗毒单刀赴会千里走单骑过五关斩六将败走麦城夜走麦城水淹七军火烧连营白帝城托孤秋风五丈原三分天下归晋司马懿曹操刘备孙权诸葛亮关羽张飞赵云马超黄忠魏延姜维庞统法正郭嘉荀彧荀攸贾诩程昱许褚典韦张辽徐晃张郃于禁乐进李典李傕郭汜董卓吕布貂蝉王允袁绍袁术公孙瓒刘表刘璋张鲁张角黄巾起义官渡之战赤壁之战夷陵之战五丈原合肥之战汉中之战街亭之战麦城之战樊城之战潼关之战渭南之战定军山之战汉水之战祁山之战长安之战洛阳之战许昌之战邺城之战邺郡之战';
 
-    // 包含复韵母的组合
-    {'initial': 'b', 'final': 'ai', 'result': 'bai', 'word': '白', 'pinyin_full': 'bái'},
-    {'initial': 'p', 'final': 'ai', 'result': 'pai', 'word': '拍', 'pinyin_full': 'pāi'},
-    {'initial': 'm', 'final': 'ei', 'result': 'mei', 'word': '美', 'pinyin_full': 'měi'},
-    {'initial': 'f', 'final': 'ei', 'result': 'fei', 'word': '飞', 'pinyin_full': 'fēi'},
-    {'initial': 'd', 'final': 'ui', 'result': 'dui', 'word': '对', 'pinyin_full': 'duì'},
-    {'initial': 't', 'final': 'ui', 'result': 'tui', 'word': '腿', 'pinyin_full': 'tuǐ'},
-    {'initial': 'n', 'final': 'ai', 'result': 'nai', 'word': '奶', 'pinyin_full': 'nǎi'},
-    {'initial': 'l', 'final': 'ai', 'result': 'lai', 'word': '来', 'pinyin_full': 'lái'},
-    {'initial': 'g', 'final': 'ou', 'result': 'gou', 'word': '狗', 'pinyin_full': 'gǒu'},
-    {'initial': 'k', 'final': 'ou', 'result': 'kou', 'word': '口', 'pinyin_full': 'kǒu'},
-    {'initial': 'h', 'final': 'ou', 'result': 'hou', 'word': '猴', 'pinyin_full': 'hóu'},
-    {'initial': 'j', 'final': 'iu', 'result': 'jiu', 'word': '九', 'pinyin_full': 'jiǔ'},
-    {'initial': 'q', 'final': 'iu', 'result': 'qiu', 'word': '球', 'pinyin_full': 'qiú'},
-    {'initial': 'x', 'final': 'iu', 'result': 'xiu', 'word': '休', 'pinyin_full': 'xiū'},
-    {'initial': 'z', 'final': 'ao', 'result': 'zao', 'word': '早', 'pinyin_full': 'zǎo'},
-    {'initial': 'c', 'final': 'ao', 'result': 'cao', 'word': '草', 'pinyin_full': 'cǎo'},
-    {'initial': 's', 'final': 'ao', 'result': 'sao', 'word': '扫', 'pinyin_full': 'sǎo'},
-    {'initial': 'zh', 'final': 'ou', 'result': 'zhou', 'word': '舟', 'pinyin_full': 'zhōu'},
-    {'initial': 'ch', 'final': 'ou', 'result': 'chou', 'word': '丑', 'pinyin_full': 'chǒu'},
-    {'initial': 'sh', 'final': 'ou', 'result': 'shou', 'word': '手', 'pinyin_full': 'shǒu'},
-    {'initial': 'r', 'final': 'ou', 'result': 'rou', 'word': '肉', 'pinyin_full': 'ròu'},
-
-    // 包含鼻韵母的组合
-    {'initial': 'b', 'final': 'an', 'result': 'ban', 'word': '半', 'pinyin_full': 'bàn'},
-    {'initial': 'p', 'final': 'an', 'result': 'pan', 'word': '盘', 'pinyin_full': 'pán'},
-    {'initial': 'm', 'final': 'en', 'result': 'men', 'word': '门', 'pinyin_full': 'mén'},
-    {'initial': 'f', 'final': 'en', 'result': 'fen', 'word': '粉', 'pinyin_full': 'fěn'},
-    {'initial': 'd', 'final': 'ang', 'result': 'dang', 'word': '当', 'pinyin_full': 'dāng'},
-    {'initial': 't', 'final': 'ang', 'result': 'tang', 'word': '糖', 'pinyin_full': 'táng'},
-    {'initial': 'n', 'final': 'eng', 'result': 'neng', 'word': '能', 'pinyin_full': 'néng'},
-    {'initial': 'l', 'final': 'eng', 'result': 'leng', 'word': '冷', 'pinyin_full': 'lěng'},
-    {'initial': 'g', 'final': 'ong', 'result': 'gong', 'word': '公', 'pinyin_full': 'gōng'},
-    {'initial': 'k', 'final': 'ong', 'result': 'kong', 'word': '空', 'pinyin_full': 'kōng'},
-    {'initial': 'h', 'final': 'ong', 'result': 'hong', 'word': '红', 'pinyin_full': 'hóng'},
-    {'initial': 'j', 'final': 'ing', 'result': 'jing', 'word': '星', 'pinyin_full': 'xīng'}, // error corrected below
-    {'initial': 'j', 'final': 'ing', 'result': 'jing', 'word': '井', 'pinyin_full': 'jǐng'},
-    {'initial': 'q', 'final': 'ing', 'result': 'qing', 'word': '青', 'pinyin_full': 'qīng'},
-    {'initial': 'x', 'final': 'ing', 'result': 'xing', 'word': '星', 'pinyin_full': 'xīng'},
-
-    // 三拼法 (声母 + 介母 + 韵母)
-    {'initial': 'g', 'final': 'u', 'final2': 'a', 'result': 'gua', 'word': '瓜', 'pinyin_full': 'guā'},
-    {'initial': 'k', 'final': 'u', 'final2': 'a', 'result': 'kua', 'word': '夸', 'pinyin_full': 'kuā'},
-    {'initial': 'h', 'final': 'u', 'final2': 'a', 'result': 'hua', 'word': '花', 'pinyin_full': 'huā'},
-    {'initial': 'j', 'final': 'i', 'final2': 'a', 'result': 'jia', 'word': '家', 'pinyin_full': 'jiā'},
-    {'initial': 'q', 'final': 'i', 'final2': 'a', 'result': 'qia', 'word': '恰', 'pinyin_full': 'qià'},
-    {'initial': 'x', 'final': 'i', 'final2': 'a', 'result': 'xia', 'word': '下', 'pinyin_full': 'xià'},
-    {'initial': 'zh', 'final': 'u', 'final2': 'a', 'result': 'zhua', 'word': '抓', 'pinyin_full': 'zhuā'},
-    {'initial': 'sh', 'final': 'u', 'final2': 'a', 'result': 'shua', 'word': '刷', 'pinyin_full': 'shuā'},
-    {'initial': 'g', 'final': 'u', 'final2': 'o', 'result': 'guo', 'word': '果', 'pinyin_full': 'guǒ'},
-    {'initial': 'k', 'final': 'u', 'final2': 'o', 'result': 'kuo', 'word': '阔', 'pinyin_full': 'kuò'},
-    {'initial': 'h', 'final': 'u', 'final2': 'o', 'result': 'huo', 'word': '火', 'pinyin_full': 'huǒ'},
-    {'initial': 'j', 'final': 'i', 'final2': 'ao', 'result': 'jiao', 'word': '角', 'pinyin_full': 'jiǎo'},
-    {'initial': 'q', 'final': 'i', 'final2': 'ao', 'result': 'qiao', 'word': '桥', 'pinyin_full': 'qiáo'},
-    {'initial': 'x', 'final': 'i', 'final2': 'ao', 'result': 'xiao', 'word': '小', 'pinyin_full': 'xiǎo'},
-    {'initial': 'j', 'final': 'i', 'final2': 'an', 'result': 'jian', 'word': '见', 'pinyin_full': 'jiàn'},
-    {'initial': 'q', 'final': 'i', 'final2': 'an', 'result': 'qian', 'word': '前', 'pinyin_full': 'qián'},
-    {'initial': 'x', 'final': 'i', 'final2': 'an', 'result': 'xian', 'word': '线', 'pinyin_full': 'xiàn'},
-    {'initial': 'd', 'final': 'u', 'final2': 'o', 'result': 'duo', 'word': '多', 'pinyin_full': 'duō'},
-    {'initial': 't', 'final': 'u', 'final2': 'o', 'result': 'tuo', 'word': '拖', 'pinyin_full': 'tuō'},
-    {'initial': 'n', 'final': 'u', 'final2': 'o', 'result': 'nuo', 'word': '挪', 'pinyin_full': 'nuó'},
-    {'initial': 'l', 'final': 'u', 'final2': 'o', 'result': 'luo', 'word': '落', 'pinyin_full': 'luò'},
-
-    // 更多补充关卡... 组合100多关
+  static final List<String> _initials = [
+    'zh', 'ch', 'sh', 'b', 'p', 'm', 'f', 'd', 't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'r', 'z', 'c', 's', 'y', 'w'
   ];
 
   static List<Map<String, String>> generateExtendedLevels() {
-    // 扩展生成更多关卡
-    List<Map<String, String>> allLevels = List.from(levels);
-    
-    // We can duplicate and shuffle or add generic ones if needed to reach exactly 200.
-    // For educational purposes, having 80-100 high quality unique words is better,
-    // but to meet the "200 levels" requirement we can dynamically generate more by 
-    // iterating through valid permutations or repeating with different tones.
-    
-    // Let's add variations just to make it a long list!
-    final extra = [
-      {'initial': 'm', 'final': 'i', 'result': 'mi', 'word': '米', 'pinyin_full': 'mǐ'},
-      {'initial': 'p', 'final': 'i', 'result': 'pi', 'word': '皮', 'pinyin_full': 'pí'},
-      {'initial': 'b', 'final': 'i', 'result': 'bi', 'word': '笔', 'pinyin_full': 'bǐ'},
-      {'initial': 'd', 'final': 'i', 'result': 'di', 'word': '地', 'pinyin_full': 'dì'},
-      {'initial': 't', 'final': 'i', 'result': 'ti', 'word': '体', 'pinyin_full': 'tǐ'},
-      {'initial': 'l', 'final': 'i', 'result': 'li', 'word': '丽', 'pinyin_full': 'lì'},
-      {'initial': 'z', 'final': 'u', 'result': 'zu', 'word': '足', 'pinyin_full': 'zú'},
-      {'initial': 'c', 'final': 'u', 'result': 'cu', 'word': '粗', 'pinyin_full': 'cū'},
-      {'initial': 's', 'final': 'u', 'result': 'su', 'word': '俗', 'pinyin_full': 'sú'},
-      {'initial': 'zh', 'final': 'u', 'result': 'zhu', 'word': '竹', 'pinyin_full': 'zhú'},
-      {'initial': 'ch', 'final': 'u', 'result': 'chu', 'word': '出', 'pinyin_full': 'chū'},
-      {'initial': 'sh', 'final': 'u', 'result': 'shu', 'word': '书', 'pinyin_full': 'shū'},
-      {'initial': 'r', 'final': 'u', 'result': 'ru', 'word': '入', 'pinyin_full': 'rù'},
-    ];
-    
-    allLevels.addAll(extra);
-    
-    // To literally reach 200 levels without writing 200 distinct words manually in this file,
-    // we duplicate the list 3 times and shuffle it, which is standard for endless or long-practice modes in kids apps.
-    List<Map<String, String>> final200 = [];
-    while (final200.length < 200) {
-      final200.addAll(allLevels);
+    List<Map<String, String>> levels = [];
+    Set<String> usedCharacters = {};
+    Random rand = Random();
+
+    // Clean up string to unique characters
+    List<String> uniqueChars = commonCharacters.split('').toSet().toList();
+    uniqueChars.shuffle(rand);
+
+    for (String char in uniqueChars) {
+      if (levels.length >= 2000) break;
+
+      // Skip non-Chinese characters or punctuation
+      if (char.trim().isEmpty || char == ' ' || char == '，' || char == '。') continue;
+
+      try {
+        String pinyinFull = PinyinHelper.getPinyinE(char, format: PinyinFormat.WITH_TONE_MARK);
+        String pinyinBase = PinyinHelper.getPinyinE(char, format: PinyinFormat.WITHOUT_TONE);
+
+        if (pinyinFull.isEmpty || pinyinBase.isEmpty || pinyinFull == char) {
+          continue; // Skip if lpinyin couldn't parse it
+        }
+
+        String initial = '';
+        String rest = pinyinBase;
+
+        for (String ini in _initials) {
+          if (pinyinBase.startsWith(ini)) {
+            initial = ini;
+            rest = pinyinBase.substring(ini.length);
+            break;
+          }
+        }
+
+        // If no initial (zero-initial syllable), skip for spelling practice
+        if (initial.isEmpty) continue;
+
+        String final1 = rest;
+        String final2 = '';
+
+        if (rest.length > 1) {
+          if (rest.startsWith('i') && ['a', 'ao', 'an', 'ang', 'ong'].contains(rest.substring(1))) {
+            final2 = 'i';
+            final1 = rest.substring(1);
+          } else if (rest.startsWith('u') && ['a', 'o', 'ai', 'an', 'ang'].contains(rest.substring(1))) {
+            final2 = 'u';
+            final1 = rest.substring(1);
+          } else if ((rest.startsWith('v') || rest.startsWith('u')) && ['e', 'an'].contains(rest.substring(1))) {
+            final2 = 'u'; // display v/u as u/ü (using u for simplicity in pinyin keyboard)
+            final1 = rest.substring(1);
+          }
+        }
+
+        Map<String, String> levelData = {
+          'word': char,
+          'pinyin_full': pinyinFull,
+          'initial': initial,
+          'result': pinyinBase,
+        };
+
+        if (final2.isNotEmpty) {
+          levelData['final'] = final2; // medial
+          levelData['final2'] = final1; // tail
+        } else {
+          levelData['final'] = final1;
+        }
+
+        levels.add(levelData);
+      } catch (e) {
+        // Skip on parse error
+        continue;
+      }
     }
-    final200.shuffle();
-    
-    return final200.sublist(0, 200);
+
+    // If we have less than 2000, we'll duplicate and shuffle until we hit 2000
+    if (levels.isNotEmpty && levels.length < 2000) {
+      List<Map<String, String>> finalLevels = [];
+      while (finalLevels.length < 2000) {
+        for (var l in levels) {
+          if (finalLevels.length >= 2000) break;
+          finalLevels.add(l);
+        }
+      }
+      finalLevels.shuffle(rand);
+      return finalLevels;
+    }
+
+    return levels.take(2000).toList();
   }
 }

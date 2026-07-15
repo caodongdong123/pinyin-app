@@ -10,7 +10,12 @@ class ListenGamePage extends StatefulWidget {
 }
 
 class _ListenGamePageState extends State<ListenGamePage> {
-  final List<String> pinyinList = ['a', 'o', 'e', 'b', 'p', 'm', 'f'];
+  final List<String> pinyinList = [
+    // 声母 (23个)
+    'b', 'p', 'm', 'f', 'd', 't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'zh', 'ch', 'sh', 'r', 'z', 'c', 's', 'y', 'w',
+    // 韵母 (24个)
+    'a', 'o', 'e', 'i', 'u', 'ü', 'ai', 'ei', 'ui', 'ao', 'ou', 'iu', 'ie', 'üe', 'er', 'an', 'en', 'in', 'un', 'ün', 'ang', 'eng', 'ing', 'ong'
+  ];
   late String _targetPinyin;
   late List<String> _options;
   int _score = 0;

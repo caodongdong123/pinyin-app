@@ -96,31 +96,35 @@ class _SpellingPracticePageState extends State<SpellingPracticePage> with Single
                 child: AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
-                    // Slide values based on animation
-                    double distance = 100 * (1 - _slideAnimation.value);
+                    // Slide values based on animation and screen width to prevent cutoff
+                    double maxDistance = MediaQuery.of(context).size.width * 0.18;
+                    double distance = maxDistance * (1 - _slideAnimation.value);
                     double opacity = isCombined ? _slideAnimation.value : 0;
                     
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // The combining blocks
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Transform.translate(
-                              offset: Offset(-distance, 0),
-                              child: _buildPinyinCard(currentData['initial']!, Colors.blue),
-                            ),
-                            if (isThreePinyin) ...[
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Transform.translate(
+                                offset: Offset(-distance, 0),
+                                child: _buildPinyinCard(currentData['initial']!, Colors.blue),
+                              ),
+                              if (isThreePinyin) ...[
+                                const SizedBox(width: 10),
+                                _buildPinyinCard(currentData['final']!, Colors.green),
+                              ],
                               const SizedBox(width: 10),
-                              _buildPinyinCard(currentData['final']!, Colors.green),
+                              Transform.translate(
+                                offset: Offset(distance, 0),
+                                child: _buildPinyinCard(isThreePinyin ? currentData['final2']! : currentData['final']!, Colors.red),
+                              ),
                             ],
-                            const SizedBox(width: 10),
-                            Transform.translate(
-                              offset: Offset(distance, 0),
-                              child: _buildPinyinCard(isThreePinyin ? currentData['final2']! : currentData['final']!, Colors.red),
-                            ),
-                          ],
+                          ),
                         ),
                         
                         const SizedBox(height: 50),
